@@ -1,5 +1,26 @@
 <?php
-function generateSelectOptions($selected = 12): string
+
+// -- params
+$generated = "...";
+$size = $_POST['size'] ?? 12;
+$useAlphaMin = $_POST['use-alpha-min'] ?? 0;
+$useAlphaMaj = $_POST['use-alpha-maj'] ?? 0;
+$useNum = $_POST['use-num'] ?? 0;
+$useSymbols = $_POST['use-symbols'] ?? 0;
+
+function isChecked($nameCheckbox) : string {
+    $check = "";
+    if ($nameCheckbox === "1") {
+        $check = "checked";
+    }
+    return $check;
+}
+
+$isUseAlphaMinCheck = isChecked($useAlphaMin);
+$isUseAlphaMajCheck = isChecked($useAlphaMaj);
+$isUseNumCheck = isChecked($useNum);
+$isUseSymbolsCheck = isChecked($useSymbols);
+function generateSelectOptions(int $size = 12): string
 {
     // on initialise une variable html vide
     $html = "";
@@ -9,9 +30,8 @@ function generateSelectOptions($selected = 12): string
 
     // pour chaque nombre de 8 à 42
     foreach ($options as $value) {
-        // si le nombre courant est celui sélectionné, on ajoute l'attribut selected à l'option
         $attribute = "";
-        if ((int) $value == (int) $selected) {
+        if ((int) $value == (int) $size) {
             $attribute = "selected";
         }
 
@@ -21,14 +41,9 @@ function generateSelectOptions($selected = 12): string
 
     return $html;
 }
-/**
- * Selects and returns a random character from the given string.
- *
- * @param string $subject The string from which a random character will be selected.
- * @return string A single randomly selected character from the input string.
- * @see https://www.php.net/manual/fr/function.random-int.php
- * @see https://www.php.net/manual/fr/function.strlen.php
- */
+
+$optionsGenerared = generateSelectOptions($size);
+
 function takeRandom(string $subject): string {
     // on prend un index au hasard dans la chaine
     $index = random_int(0, strlen($subject) - 1);
@@ -48,10 +63,17 @@ function takeRandom(string $subject): string {
  * @param bool $useAlphaMaj Whether to include uppercase alphabetic characters in the password.
  * @param bool $useNum Whether to include numerical characters in the password.
  * @param bool $useSymbols Whether to include special symbols in the password.
- * @return string The generated random password.
- * @see https://www.php.net/manual/fr/function.array-rand.php
- * @see https://www.php.net/manual/fr/function.str-shuffle.php
- */
+*/
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $generated = generatePassword($size, $useAlphaMin, $useAlphaMaj, $useNum, $useSymbols);
+} else {
+    $useAlphaMin = 1;
+    $useAlphaMaj = 1;
+    $useNum = 1;
+    $useSymbols = 1;
+}
+
 function generatePassword(
     int $size,
     bool $useAlphaMin,
@@ -59,58 +81,59 @@ function generatePassword(
     bool $useNum,
     bool $useSymbols
 ): string {
-        $sequences = [];
-        if ($useAlphaMin) $sequences[] = 'abcdefghijklmnopqrstuvwxyz';
-        if ($useAlphaMaj) $sequences[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        if ($useNum) $sequences[] = '0123456789';
-        if ($useSymbols) $sequences[] = '!@#$%^&*()?_-.,';
+    if ($useAlphaMin == 0 &&
+        $useAlphaMaj == 0 &&
+        $useNum == 0 &&
+        $useSymbols == 0) {
+        return "Erreur : veuillez choisir au moins un type de caractère.";
+    }
 
-        if (empty($sequences)) return ''; // aucun caractère choisi
+    $password = "";
 
-        $password = '';
+    $sequences = [];
 
-    // Ajouter au moins un caractère de chaque type sélectionné
-        foreach ($sequences as $seq) {
-            $password .= takeRandom($seq);
-        }
+    if ($useAlphaMaj == 1) {
+        $sequences["maj"] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    }
 
-    // Remplir le reste du mot de passe
-        $remainingLength = $size - strlen($password);
-        for ($i = 0; $i < $remainingLength; $i++) {
-            $seq = $sequences[random_int(0, count($sequences) - 1)];
-            $password .= takeRandom($seq);
-        }
+    if ($useAlphaMin == 1) {
+        $sequences["min"] = "abcdefghijklmnopqrstuvwxyz";
+    }
 
-    // Mélanger le mot de passe pour éviter que les caractères obligatoires soient au début
-    return str_shuffle($password);
+    if ($useNum == 1) {
+        $sequences["num"] = "0123456789";
+    }
+
+    if ($useSymbols == 1) {
+        $sequences["symbols"] = "!@#$%^&*?(),.=+";
+    }
+
+    if ($useAlphaMaj == 1) {
+        $password .= takeRandom($sequences["maj"]);
+    }
+    if ($useAlphaMin == 1) {
+        $password .= takeRandom($sequences["min"]);
+    }
+    if ($useNum == 1) {
+        $password .= takeRandom($sequences["num"]);
+    }
+    if ($useSymbols == 1) {
+        $password .= takeRandom($sequences["symbols"]);
+    }
+
+    $limitBoucle = $size - ($useAlphaMin + $useAlphaMaj + $useNum + $useSymbols);
+
+    // complete le password
+    for($i = 0; $i < $limitBoucle; $i++) {
+        $values = array_values($sequences);
+        $randomSequence = $values[rand(0, count($values) - 1)];
+        $password .= takeRandom($randomSequence);
+    }
+        $password = str_shuffle($password);
+
+    return $password;
 }
 
-
-// -- params
-$generated = "...";
-$size = $_POST['size'] ?? 12;
-$useAlphaMin = $_POST['use-alpha-min'] ?? 0;
-$useAlphaMaj = $_POST['use-alpha-maj'] ?? 0;
-$useNum = $_POST['use-num'] ?? 0;
-$useSymbols = $_POST['use-symbols'] ?? 0;
-
-// -- generate password
-
-// $_SERVER est une autre variable mise à disposition par PHP automatiquement
-// avec les informations qui viennent du serveur, de la requête HTTP, et d'autres informations
-//
-// Ici, si la requête est POST -> le formulaire a été envoyé, donc on génère un mot de passe
-// sinon, c'est que c'est la première fois qu'on visite la page, et donc, on affiche tout par défaut
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $generated = generatePassword($size, $useAlphaMin, $useAlphaMaj, $useNum, $useSymbols);
-} else {
-    // on surcharge les variables (on les mets à 1) pour forcer l'affichage
-    // des cases à cocher comme "cochée"
-    $useAlphaMin = 1;
-    $useAlphaMaj = 1;
-    $useNum = 1;
-    $useSymbols = 1;
-}
 
 // -- render
 
@@ -123,7 +146,7 @@ $useAlphaMajChecked = $useAlphaMaj == 1 ? "checked" : "";
 $useNumChecked = $useNum == 1 ? "checked" : "";
 $useSymbolsChecked = $useSymbols == 1 ? "checked" : "pas-checked";
 // on génère notre page
-$page = <<<HTML
+$page = <<< HTML
 <!doctype html>
 <html lang="en">
   <head>
@@ -193,11 +216,8 @@ $page = <<<HTML
 
 
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   </body>
 </html>
 HTML;
 
 echo $page;
-?>
