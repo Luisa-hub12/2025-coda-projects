@@ -161,7 +161,11 @@ $page = <<< HTML
 
     <div class="container">
         <h1>Générateur de mot de passe</h1>
-
+            <style>
+            h1 {
+            margin-top: 30px;
+            }
+</style>
         <div class="row pt-4">
             <div class="col-md-12">
                 <div class="alert alert-dark" role="alert">
@@ -184,30 +188,41 @@ $page = <<< HTML
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="1" id="use-alpha-min" name="use-alpha-min" {$useAlphaMinChecked}>
                       <label class="form-check-label" for="use-alpha-min">
-                        Utiliser les lettres minuscules (a-z)
+                        Utiliser des lettres minuscules (a-z).
                       </label>
                     </div>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="1" id="use-alpha-maj" name="use-alpha-maj" {$useAlphaMajChecked}>
                       <label class="form-check-label" for="use-alpha-maj">
-                        Utiliser les lettres majuscules (A-Z)
+                        Utiliser des lettres majuscules (A-Z).
                       </label>
                     </div>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="1" id="use-num" name="use-num" {$useNumChecked}>
                       <label class="form-check-label" for="use-num">
-                        Utiliser les chiffres (0-9)
+                        Utiliser des chiffres (0-9).
                       </label>
                     </div>
                     <div class="form-check">
                       <input class="form-check-input" type="checkbox" value="1" id="use-symbols" name="use-symbols" {$useSymbolsChecked}>
                       <label class="form-check-label" for="use-symbols">
-                        Utiliser les symboles (!@#$%^&*?()-_)
+                        Utiliser des symboles (!@#$%^&*?()-_).
                       </label>
                     </div>
 
-                    <div class="pt-2">
-                        <button type="submit" class="btn btn-primary mb-3">Générer !</button>
+                    <div>
+                        <button type="submit">Générer mon mot de passe !</button>
+                        <style>
+                        button {
+                        background-color: red;
+                        color: white;
+                        border-radius: 10px;
+                        width: 150px;
+                        height: 90px;
+                        margin-top: 30px;
+                        margin-left: 100px;
+                        }
+</style>
                     </div>
                 </form>
             </div>
