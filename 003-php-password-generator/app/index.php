@@ -15,7 +15,7 @@ function isChecked($nameCheckbox) : string {
     }
     return $check;
 }
-
+// si la case minuscule, maj, num, symbole est cochée, alors on utilise et minuscules, maj, num, symbole.
 $isUseAlphaMinCheck = isChecked($useAlphaMin);
 $isUseAlphaMajCheck = isChecked($useAlphaMaj);
 $isUseNumCheck = isChecked($useNum);
@@ -26,7 +26,7 @@ function generateSelectOptions(int $size = 12): string
     $html = "";
 
     // utilisation de la fonction range pour générer un tableau de valeurs
-    $options = range(8, 42);
+    $options = range(8, 42);// on peut choisir une longueur du mot de passe qui aura une taille de minimum 8 caractères et maximum 42 caractères.
 
     // pour chaque nombre de 8 à 42
     foreach ($options as $value) {
@@ -45,7 +45,7 @@ function generateSelectOptions(int $size = 12): string
 $optionsGenerared = generateSelectOptions($size);
 
 function takeRandom(string $subject): string {
-    // on prend un index au hasard dans la chaine
+    // on prend un caractère au hasard dans la chaine
     $index = random_int(0, strlen($subject) - 1);
 
     // en PHP, les chaines sont considérés implicitement comme des tableaux
@@ -81,7 +81,7 @@ function generatePassword(
     bool $useNum,
     bool $useSymbols
 ): string {
-    if ($useAlphaMin == 0 &&
+    if ($useAlphaMin == 0 && // si aucun n'est coché, alors on retourne erreur.
         $useAlphaMaj == 0 &&
         $useNum == 0 &&
         $useSymbols == 0) {
@@ -92,35 +92,35 @@ function generatePassword(
 
     $sequences = [];
 
-    if ($useAlphaMaj == 1) {
+    if ($useAlphaMaj == 1) { // si UseAlphaMaj = 1, alors la case majuscule est cochée par l'utilisateur donc on retourne 'maj'(ABCDEFGH...).
         $sequences["maj"] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     }
 
-    if ($useAlphaMin == 1) {
+    if ($useAlphaMin == 1) { // si UseAlphaMin = 1, alors la case minuscule est cochée par l'utilisateur donc on retourne 'min' (abcdefg...).
         $sequences["min"] = "abcdefghijklmnopqrstuvwxyz";
     }
 
-    if ($useNum == 1) {
+    if ($useNum == 1) { // si UseNum = 1, alors la case numéro est cochée par l'utilisateur donc on retourne 'num' (1234567890).
         $sequences["num"] = "0123456789";
     }
 
-    if ($useSymbols == 1) {
+    if ($useSymbols == 1) { // si Usesymbols = 1, alors la case symbole est cochée par l'utilisateur donc on retourne symbole (@#?/!...).
         $sequences["symbols"] = "!@#$%^&*?(),.=+";
     }
 
     if ($useAlphaMaj == 1) {
-        $password .= takeRandom($sequences["maj"]);
+        $password .= takeRandom($sequences["maj"]); // on met des lettres majuscules de manière aléatoire.
     }
     if ($useAlphaMin == 1) {
-        $password .= takeRandom($sequences["min"]);
+        $password .= takeRandom($sequences["min"]); // on met les lettres minuscules de manière aléatoire.
     }
     if ($useNum == 1) {
-        $password .= takeRandom($sequences["num"]);
+        $password .= takeRandom($sequences["num"]); // on met des numéros de manière aléatoire.
     }
     if ($useSymbols == 1) {
-        $password .= takeRandom($sequences["symbols"]);
+        $password .= takeRandom($sequences["symbols"]); // on met des symboles de manière aléatoire.
     }
-
+// on limite la boucle à la taille du mot de passe demandé par l'utilisateur. -> Quand la taille demandé est remplie, on arrete la boucle et on ne renvoie plus de caractère.
     $limitBoucle = $size - ($useAlphaMin + $useAlphaMaj + $useNum + $useSymbols);
 
     // complete le password
@@ -152,7 +152,7 @@ $page = <<< HTML
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+<! -- pour avoir une belle mise en page on utilise link herf + lien css -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>Générateur de mot de passe</title>
