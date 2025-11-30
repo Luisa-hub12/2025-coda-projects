@@ -3,6 +3,18 @@
 // -- importation des librairies à l'aide de require_once
 require_once 'inc/page.inc.php';
 require_once 'inc/database.inc.php';
+require_once 'inc/utils.inc.php';
+
+// initialize data base manager
+$host = "mysql";
+$dbname = "lowify";
+$username = "lowify";
+$password = "lowifypassword";
+
+$db = null;
+
+$allArtists = [];
+$artistesAsHTML = "";
 
 // -- initialisation de la connexion à la base de données
 
@@ -24,11 +36,9 @@ $allArtists = [];
 
 // c'est une opération dangereuse, donc on utilise try/catch
 // et on affiche le message d'erreur si une erreur survient
-try {
-    // version en une ligne
-    $allArtists = $db->executeQuery("SELECT id, name, cover FROM artist");
 
     // version multi-ligne
+try {
     $allArtists = $db->executeQuery(<<<SQL
     SELECT 
         id,
@@ -91,14 +101,20 @@ foreach ($allArtists as $artist) {
     object-fit: cover;
 }
 .artist-link {
-    color: inherit; /* Utiliser la couleur du parent */
+    color: deeppink; /* Utiliser la couleur du parent */
+}
+.artist-link:hover {
+color: deepskyblue;
 }
 
 
 .artist-name {
-    color: black;
+    color: deeppink;
     font-size: 1rem;
     margin-top: 10px;
+}
+.artist-name:hover {
+color: deepskyblue;
 }
 
 </style>
@@ -136,7 +152,7 @@ HTML;
 // en injectant le HTML correspondant à la liste des artistes
 $html = <<<HTML
 <div class="container bg-dark text-white p-4">
-    <a href="index.php" class="link text-white"> ACCUEIL !</a>
+    <a href="index.php" class="link text-white">⬅ ACCUEIL !</a>
     <h1 class="mb-4">Artistes</h1>
     {$artistsAsHTML}
 </div>
@@ -146,14 +162,21 @@ font-size: 50px;
 }
 .link {
     font-size: 30px;
+    color: deeppink;
+}
+
+.link:hover {
+color: deepskyblue;
 }
 </style>
 
 HTML;
 
 // -- on génère et on affiche la page
-// je vous conseille de faire comme ça
-$page = new HTMLPage("Artistes - Lowify");
-$page->addContent($html);
-echo $page->render();
-
+// displaying the page using HTMLPage class
+echo (new HTMLPage(title: "Lowify - Artistes"))
+    ->addContent($html)
+    ->addHead('<meta charset="utf-8">')
+    ->addHead('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
+    ->addStylesheet("inc/style.css")
+    ->render();
