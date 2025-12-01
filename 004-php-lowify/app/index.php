@@ -167,6 +167,59 @@ foreach ($top5NotationAlbums as $album) {
                 <p><a href="artist.php?id=$artistId" title="$artistName - Détails de l'artiste">$artistName</a></p>
             </a>
         </div>
+    <style>
+    .page-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .content-section {
+        margin-bottom: 40px;
+    }
+
+    .card-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        padding-bottom: 10px;
+    }
+
+    .card-item {
+        flex: 0 0 200px;
+        background-color: pink;
+        padding: 16px;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+    }
+
+    .card-item:hover {
+        background-color: lightskyblue;
+    }
+
+    .card-item a,
+    .card-item p{
+        display: block;
+        text-align: center;
+    }
+
+    .card-item.artist img {
+        width: 100%;
+        height: auto;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+    }
+
+    .card-item h5 {
+        color: black;
+        font-size: 18px;
+        margin-top: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    </style>
     HTML;
 }
 
@@ -238,7 +291,7 @@ foreach ($allSongsForSearch as $song) {
 // final HTML structure of the page
 $html = <<< HTML
 <div class="page-container">
-    <h1>Lowify</h1>
+    <h1 class="content-title">Lowify</h1>
 
     <div class="search-section">
         <form action="search.php" method="POST" class="search-form">
@@ -246,7 +299,7 @@ $html = <<< HTML
             <datalist id="suggestions">
                 $allNamesForSearchAsHTML
             </datalist>
-            <button type="submit">Rechercher</button>
+            <button class="search-button" type="submit">Rechercher</button>
         </form>
     </div>
     
@@ -256,7 +309,7 @@ $html = <<< HTML
             $top5ArtistsAsHTML
         </div>
         <p class="view-all-link">
-            <a href="artists.php" class="button primary-button" title="Voir tous les artistes">➡Voir tout les artistes !</a>
+            <a href="artists.php" class="button primary-button" title="Voir tous les artistes">➡ TOUT LES ARTISTES !</a>
         </p>
     </div>
     
@@ -274,6 +327,38 @@ $html = <<< HTML
         </div>
     </div>
 </div>
+<style>
+.content-title {
+text-align: center;
+font-size: 50px;
+color: lightpink;
+text-shadow: 1px 1px 1px black;
+}
+
+.page-container {
+text-align: center;
+}
+
+.search-form {
+font-size: 60px;
+}
+
+.search-button {
+background-color: pink;
+border-radius: 10px;
+font-size: 20px;
+}
+.search-button:hover {
+background-color: deepskyblue;
+}
+
+.card-item.album img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+</style>
 HTML;
 
 // displaying the page using HTMLPage class
@@ -281,5 +366,4 @@ echo (new HTMLPage(title: "Lowify"))
     ->addContent($html)
     ->addHead('<meta charset="utf-8">')
     ->addHead('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
-    ->addStylesheet("inc/style.css")
     ->render();

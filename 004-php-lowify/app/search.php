@@ -69,7 +69,7 @@ SQL, ["search" => $search, "searchLike" => $searchLike]);
 // or generating HTML for each artist
 if (sizeof($artistsFound) == 0) {
     $artistsFoundAsHTML .= <<<HTML
-        <p class="no-result">Aucun artiste ne correspond à votre recherche.</p>
+        <p class="no-result">ERREUR, VOTRE RECHERCHE N'EXISTE PAS !</p>
     HTML;
 } else {
     foreach ($artistsFound as $artist) {
@@ -120,7 +120,7 @@ SQL, ["search" => $search, "searchLike" => $searchLike]);
 // or generating HTML for each album
 if (sizeof($albumsFound) == 0) {
     $albumsFoundAsHTML .= <<<HTML
-        <p class="no-result">Aucun album ne correspond à votre recherche.</p>
+        <p class="no-result">VOTRE RECHERCHE N'EXISTE PAS.</p>
     HTML;
 } else {
     foreach ($albumsFound as $album) {
@@ -181,7 +181,7 @@ SQL, ["search" => $search, "searchLike" => $searchLike]);
 // or generating HTML for each song
 if (sizeof($songsFound) == 0) {
     $songsFoundAsHTML .= <<<HTML
-        <p class="no-result">Aucune chanson ne correspond à votre recherche.</p>
+        <p class="no-result">VOTRE RECHERCHE N'EXISTE PAS</p>
     HTML;
 } else {
     $songsFoundAsHTML .= <<<HTML
@@ -229,7 +229,7 @@ if (sizeof($songsFound) == 0) {
 // final HTML structure of the page
 $html = <<< HTML
 <div class="page-container">
-    <a href="index.php" class="back-link" title="Retour à l'accueil">← Retour à l'accueil</a>
+    <a href="index.php" class="back-link" title="Retour à l'accueil">⬅ ACCUEIL</a>
     
     <h1 class="search-title">Résultats pour : "$search"</h1>
 
@@ -252,6 +252,41 @@ $html = <<< HTML
         $songsFoundAsHTML
     </div>
 </div>
+<style>
+.search-title {
+    margin-bottom: 40px;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.card-grid {
+    flex-wrap: wrap;
+}
+
+.no-result {
+    color: red;
+    font-style: italic;
+    padding: 10px 0;
+}
+
+.track-list-search .track-item {
+    background-color: transparent;
+}
+
+.track-list-search .track-item:hover {
+    background-color: lightpink;
+}
+
+
+.track-list-search .track-artist {
+    display: block;
+    font-size: 20px;
+    color: black;
+}
+.back-link {
+font-size: 30px;
+}
+</style>
 HTML;
 
 // displaying the page using HTMLPage class
@@ -259,5 +294,4 @@ echo (new HTMLPage(title: "Lowify - Recherche"))
     ->addContent($html)
     ->addHead('<meta charset="utf-8">')
     ->addHead('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
-    ->addStylesheet("inc/style.css")
     ->render();

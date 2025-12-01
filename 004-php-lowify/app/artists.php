@@ -176,5 +176,4 @@ echo (new HTMLPage(title: "Lowify - Artistes"))
     ->addContent($html)
     ->addHead('<meta charset="utf-8">')
     ->addHead('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
-    ->addStylesheet("inc/style.css")
     ->render();

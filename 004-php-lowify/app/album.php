@@ -96,6 +96,67 @@ $albumInfoAsHTML = <<<HTML
             </p>
         </div>
     </header>
+<style>
+
+.album-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 30px;
+    margin-bottom: 40px;
+    padding: 30px 0;
+    background: linear-gradient(180deg, deepskyblue 5%,lightpink 100%);
+    padding-bottom: 50px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.album-cover-large {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 4px 60px rgba(0, 0, 0, 0.5);
+}
+
+.album-details {
+    display: flex;
+    flex-direction: column;
+    color: hotpink;
+    text-shadow: 1px 1px 1px rgb(54,158,252);
+}
+
+.album-type {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.album-name-title {
+    font-size: 4em;
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0 0 10px 0;
+}
+
+.album-meta {
+    font-size: 1em;
+    color: deeppink;
+}
+
+.artist-link-small {
+    font-weight: bold;
+    color: deeppink;
+}
+
+.artist-link-small:hover {
+    text-decoration: underline;
+}
+
+.meta-separator {
+    margin: 0 8px;
+}
+
+</style>
 HTML;
 
 /**
@@ -146,13 +207,83 @@ foreach ($songsOfAlbum as $song) {
                 <span class="track-note-small">$songNoteFormatted</span>
             </div>
         </div>
+    <style>
+
+    .track-header-row {
+        display: flex;
+        padding: 10px 0;
+        margin: 0;
+        border-bottom: 1px solid black;
+        color: dodgerblue;
+        font-size: 0.9em;
+        font-weight: bold;
+    }
+
+    .track-name-header {
+        flex-grow: 1;
+        margin-left: 35px;
+        font-size: 20px;
+    }
+    
+    .track-name {
+    font-size: 20px;
+    }
+
+    .track-duration-header {
+        width: 100px;
+        text-align: right;
+    }
+
+    .track-note-header {
+        width: 75px;
+        text-align: right;
+    }
+    .track-item-album {
+        background-color: transparent;
+        padding-bottom: 50px;
+        border-bottom: 1px solid black;
+    }
+
+    .track-item-album:hover {
+        background-color: pink;
+        padding-bottom: 60px;
+    }
+
+    .track-item-album .track-info {
+        flex-grow: 1;
+        gap: 15px;
+    }
+
+    .track-item-album .track-text-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .track-item-album .track-artist {
+        font-size: 19px;
+        color: dodgerblue;
+        padding-top: 20px;
+    }
+
+    .track-item-album .track-details {
+        width: 100px;
+        justify-content: flex-end;
+    }
+    .track-duration {
+    padding-left: 750px;
+    }
+    
+    .track-note-small {
+    padding-left: 820px;
+    }
+    </style>
     HTML;
 }
 
 // final HTML structure of the page
 $html = <<< HTML
 <div class="page-container">
-    <a href="index.php" class="back-link" title="Retour à l'accueil">← Retour à l'accueil</a>
+    <a href="index.php" class="back-link" title="Retour à l'accueil">⬅ ACCUEIL !</a>
     $albumInfoAsHTML
     <div class="content-section">
         <h2>Pistes de l'album</h2>
@@ -166,6 +297,26 @@ $html = <<< HTML
         </div>
     </div>
 </div>
+<style>
+.page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.content-section {
+    margin-bottom: 40px;
+}
+.back-link {
+font-size: 30px;
+color: hotpink;
+}
+
+.back-link:hover {
+color: deepskyblue;
+}
+
+</style>
 HTML;
 
 // displaying the page using HTMLPage class
@@ -173,5 +324,4 @@ echo (new HTMLPage(title: "Lowify - $albumName"))
     ->addContent($html)
     ->addHead('<meta charset="utf-8">')
     ->addHead('<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">')
-    ->addStylesheet("inc/style.css")
     ->render();
