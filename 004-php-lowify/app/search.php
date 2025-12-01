@@ -12,7 +12,7 @@ $password = "lowifypassword";
 
 $db = null;
 
-$search = $_POST["search"];
+$search = $_POST["search"] ?? '';
 $searchLike = "%". $search . "%";
 
 $artistsFound = [];
@@ -159,6 +159,7 @@ try {
         song.name AS song_name,
         song.duration AS song_duration,
         song.note AS song_note,
+        song.id AS song_id,
         album.name AS album_name,
         album.id AS album_id,
         artist.name AS artist_name,
@@ -191,12 +192,15 @@ if (sizeof($songsFound) == 0) {
         $songName = $song['song_name'];
         $songDuration = $song['song_duration'];
         $songNote = $song['song_note'];
+        $songId = $song['song_id'];
         $albumName = $song['album_name'];
         $albumId = $song['album_id'];
         $artistName = $song['artist_name'];
         $artistId = $song['artist_id'];
 
         $songDurationInMMSS = timeInMMSS($songDuration);
+        $songNoteFormatted = noteFormatted($songNote);
+
 
         $songsFoundAsHTML .= <<<HTML
         <div class="track-item track-item-album">
@@ -212,7 +216,7 @@ if (sizeof($songsFound) == 0) {
             </div>
             <div class="track-details">
                 <span class="track-duration">$songDurationInMMSS</span>
-                <span class="track-note-small">Note: $songNote/5</span>
+                <span class="track-note-small">Note: $songNoteFormatted</span>
             </div>
         </div>
         HTML;

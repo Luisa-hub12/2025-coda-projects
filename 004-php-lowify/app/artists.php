@@ -31,8 +31,6 @@ try {
     exit;
 }
 
-// -- on récupère les infors de tout les artistes depuis la base de données
-$allArtists = [];
 
 // c'est une opération dangereuse, donc on utilise try/catch
 // et on affiche le message d'erreur si une erreur survient

@@ -11,8 +11,8 @@ $html = <<< HTML
     <h1 class="error-title">$message</h1>
     
     <div class="error-details">
-        <p>Votre requête ou recherche n'a pas pu aboutir ou la ressource demandée n'existe pas.</p>
-        <a href="index.php" class="button primary-button large-button" title="Retour à l'accueil">Retour à l'accueil</a>
+        <p>Votre recherche n'existe pas, veuillez rééssayer !</p>
+        <a href="index.php" class="button primary-button large-button" title="Retour à l'accueil">⬅ACCUEIL !</a>
     </div>
 </div>
 HTML;

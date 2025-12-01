@@ -50,6 +50,7 @@ try {
         exit;
     }
 
+
 } catch (PDOException $ex) {
     header("Location: $error");
     exit;
@@ -176,6 +177,8 @@ foreach ($artistTop5Songs as $song) {
 
     // convert duration into MM:SS format
     $songDurationInMMSS = timeInMMSS($songDuration);
+    $songNoteFormatted = noteFormatted($songNote);
+
 
     $artistTop5SongsAsHTML .= <<<HTML
         <div class="track-item">

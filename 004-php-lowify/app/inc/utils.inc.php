@@ -23,7 +23,8 @@ function dateInDMY (string $date) : string {
 function timeInMMSS(int $number): string {
     $minutes = floor($number / 60);
     $secondes = $number % 60;
-    return $minutes . ':' . $secondes;
+    // Format the time using zero-padded two-digit values to maintain a consistent style
+    return sprintf("%02d:%02d", $minutes, $secondes);
 }
 
 /**
@@ -40,4 +41,14 @@ function numberWithLetter(int $number): string {
     } else {
         return (string)$number;
     }
+}
+
+/**
+ * Transforms a int note into a formatted string note to maintain a consistent style
+ *
+ * @param float $number The note to transform
+ * @return string The formatted note.
+ **/
+function noteFormatted(float $number): string {
+    return sprintf("%.02f" . "/5", $number);
 }

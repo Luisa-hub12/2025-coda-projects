@@ -244,7 +244,7 @@ $html = <<< HTML
         <form action="search.php" method="POST" class="search-form">
             <input type="search" id="site-search" name="search" list="suggestions" placeholder="Artistes, chansons ou albums..." />
             <datalist id="suggestions">
-            $allNamesForSearchAsHTML
+                $allNamesForSearchAsHTML
             </datalist>
             <button type="submit">Rechercher</button>
         </form>
@@ -256,7 +256,7 @@ $html = <<< HTML
             $top5ArtistsAsHTML
         </div>
         <p class="view-all-link">
-            <a href="artists.php" class="button primary-button" title="Voir tous les artistes">Voir tous les artistes</a>
+            <a href="artists.php" class="button primary-button" title="Voir tous les artistes">➡Voir tout les artistes !</a>
         </p>
     </div>
     

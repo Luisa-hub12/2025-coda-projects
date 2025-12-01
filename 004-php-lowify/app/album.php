@@ -109,7 +109,8 @@ try {
     SELECT 
         song.name AS song_name,
         song.duration AS song_duration,
-        song.note AS song_note
+        song.note AS song_note,
+        song.id AS song_id
     FROM song
     WHERE song.album_id = :idAlbum
     ORDER BY song.id ASC
@@ -125,9 +126,12 @@ foreach ($songsOfAlbum as $song) {
     $songName = $song['song_name'];
     $songDuration = $song['song_duration'];
     $songNote = $song['song_note'];
+    $songId = $song['song_id'];
 
     // convert duration into MM:SS format
     $songDurationInMMSS = timeInMMSS($songDuration);
+    $songNoteFormatted = noteFormatted($songNote);
+
 
     $songsOfAlbumAsHTML .= <<<HTML
         <div class="track-item track-item-album">
@@ -139,7 +143,7 @@ foreach ($songsOfAlbum as $song) {
             </div>
             <div class="track-details">
                 <span class="track-duration">$songDurationInMMSS</span>
-                <span class="track-note-small">$songNote/5</span>
+                <span class="track-note-small">$songNoteFormatted</span>
             </div>
         </div>
     HTML;
