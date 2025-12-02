@@ -38,12 +38,7 @@ try {
     exit;
 }
 
-/**
- * Query album information with the corresponding artist
- *
- * This query retrieves the album name, its cover, release date,
- * and the artist associated.
- **/
+// on initialise la base de donnée pour 'l'album'.
 try {
     $albumInfos = $db->executeQuery(<<<SQL
     SELECT 
@@ -57,12 +52,12 @@ try {
     WHERE album.id = :idAlbum
     SQL, ["idAlbum" => $idAlbum]);
 
-    // redirection to error page if album doesn't exist
+    // redirection to error page if album doesn't exist.
     if (sizeof($albumInfos) == 0) {
         header("Location: $error");
         exit;
     }
-
+// si l'album n'existe pas alors on affiche 'Album inconnu'.
 } catch (PDOException $ex) {
     $error = "error.php?message=Album inconnu";
     header("Location: $error");
@@ -159,12 +154,7 @@ $albumInfoAsHTML = <<<HTML
 </style>
 HTML;
 
-/**
- * Query all the songs of the current album
- *
- * This query returns each song name, duration, and note,
- * ordered by song id in ascending order.
- **/
+// on initialise la base de données pour les songs de l'album.
 try {
     $songsOfAlbum = $db->executeQuery(<<<SQL
     SELECT 
@@ -176,24 +166,27 @@ try {
     WHERE song.album_id = :idAlbum
     ORDER BY song.id ASC
     SQL, ["idAlbum" => $idAlbum]);
-
+// si erreur dans la requete alors on envoie un message d'erreur.
 } catch (PDOException $ex) {
     echo "Erreur lors de la requête en base de donnée : " . $ex->getMessage();
     exit;
 }
 
-// generating HTML for each song of the album
+// pour generer du html pour chaque song de l'album.
 foreach ($songsOfAlbum as $song) {
     $songName = $song['song_name'];
     $songDuration = $song['song_duration'];
     $songNote = $song['song_note'];
     $songId = $song['song_id'];
 
-    // convert duration into MM:SS format
+    // on va convertir la durée avec mm:ss
     $songDurationInMMSS = timeInMMSS($songDuration);
+
+    // on initialise la note pour chaque son.
     $songNoteFormatted = noteFormatted($songNote);
 
-
+// track name = nom de la piste
+    // track artist = piste de l'artiste
     $songsOfAlbumAsHTML .= <<<HTML
         <div class="track-item track-item-album">
             <div class="track-info">
@@ -233,6 +226,8 @@ foreach ($songsOfAlbum as $song) {
         width: 100px;
         text-align: right;
     }
+    
+    
 
     .track-note-header {
         width: 75px;

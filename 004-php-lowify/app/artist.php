@@ -12,10 +12,10 @@ $username = "lowify";
 $password = "lowifypassword";
 
 $db = null;
-
+// on demande d'id pour chauqe artiste, si l'id est inconnu, on retourne erreur.
 $idArtist = $_GET["id"];
 $error = "error.php?message=Artiste inconnu";
-
+// on initialise les variables infos
 $artistInfos = [];
 $artistInfoAsHTML = "";
 $artistTop5Songs = [];
@@ -23,7 +23,7 @@ $artistTop5SongsAsHTML = "";
 $artistAlbums = [];
 $artistAlbumsAsHTML = "";
 // c'est une opération dangereuse, donc on utilise try/catch
-// et on affiche le message d'erreur si une erreur survient
+// et on affiche le message d'erreur si erreur.
 try {
     $db = new DatabaseManager(
         dsn: "mysql:host=mysql;dbname=$dbname;charset=utf8mb4",
@@ -45,7 +45,7 @@ try {
     SQL, ["idArtist" => $idArtist]);
 
     // redirection to error page if idArtist doesn't exist
-    if (sizeof($artistInfos) == 0) {
+    if (empty($artistInfos)) {
         header("Location: $error");
         exit;
     }
@@ -56,20 +56,21 @@ try {
     exit;
 }
 // check that our array is only line
-if (1 !== sizeof($artistInfos)) {
-    echo "Erreur lors de la requête en base de donnée";
+if (!is_array($artistInfos) || count($artistInfos) !== 1) {
+    header("Location: $error");
+    exit;
 }
 
 // converting the result into a simple array
 $artistInfosInArray = $artistInfos[0];
 
-// storing artist information in variables
+// artist infos.
 $artistName = $artistInfosInArray['name'];
 $artistCover = $artistInfosInArray['cover'];
 $artistBio = $artistInfosInArray['biography'];
 $artistMonthlyListeners = $artistInfosInArray['monthly_listeners'];
 
-// formatting monthly listeners with .k and .M
+// utils.inc.php -> fonction pour dire d'arrondir avec k et m .k and .M
 $artistMonthlyListenersInLetter = numberWithLetter($artistMonthlyListeners);
 
 $artistInfoAsHTML .= <<<HTML
@@ -177,6 +178,9 @@ foreach ($artistTop5Songs as $song) {
 
     // convert duration into MM:SS format
     $songDurationInMMSS = timeInMMSS($songDuration);
+
+
+
     $songNoteFormatted = noteFormatted($songNote);
 
 
@@ -279,10 +283,10 @@ foreach ($artistAlbums as $album) {
     $albumCover = $album['album_cover'];
     $albumReleaseDate = $album['album_release_date'];
 
-    // formatting release date as DD/MM/YYYY
+    // DD/MM/YYYY
     $albumReleaseDateInDMY = dateInDMY($albumReleaseDate);
 
-    // generating the HTML block containing album information
+    // HTML block
     $artistAlbumsAsHTML .= <<<HTML
         <div class="card-item album">
             <a href="album.php?id=$albumId" title="$albumName - Détails de l'album">
@@ -294,7 +298,6 @@ foreach ($artistAlbums as $album) {
     HTML;
 }
 
-// final HTML structure of the page
 $html = <<< HTML
 <div class="page-container">
     <a href="index.php" class="back-link" title="Retour à l'accueil">⬅ ACCUEIL !</a>
@@ -329,6 +332,7 @@ background-color: lightpink;
 .card-item:hover {
 background-color: lightblue;
 }
+
 
 </style>
 HTML;

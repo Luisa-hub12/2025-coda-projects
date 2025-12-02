@@ -31,7 +31,7 @@ $songsFoundAsHTML = "";
  * @param string $password password of the data base
  **/
 try {
-    // check if the connexion is ok
+    // on verifie si y'a une bonne connection.
     $db = new DatabaseManager(
         dsn: "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
         username: $username,
@@ -42,12 +42,7 @@ try {
     exit;
 }
 
-/**
- * Query artists corresponding to the search
- *
- * This query retrieves the artist name, its cover
- * if he is corresponding to the search.
- **/
+// resultat pour chaque recherche.
 try {
     $artistsFound = $db->executeQuery(<<<SQL
     SELECT
@@ -65,8 +60,7 @@ SQL, ["search" => $search, "searchLike" => $searchLike]);
     exit;
 }
 
-// Return message if no artist founded
-// or generating HTML for each artist
+// si la recherche n'existe pas, on retourne erreur.
 if (sizeof($artistsFound) == 0) {
     $artistsFoundAsHTML .= <<<HTML
         <p class="no-result">ERREUR, VOTRE RECHERCHE N'EXISTE PAS !</p>
@@ -88,13 +82,7 @@ if (sizeof($artistsFound) == 0) {
     }
 }
 
-/**
- * Query albums corresponding to the search
- *
- * This query retrieves the album name, its cover, the release date,
- * the name of its artist,
- * if it is corresponding to the search.
- **/
+// resultat pour la recherche d'un album
 try {
     $albumsFound = $db->executeQuery(<<<SQL
     SELECT 
@@ -116,8 +104,7 @@ SQL, ["search" => $search, "searchLike" => $searchLike]);
     exit;
 }
 
-// Return message if no album founded
-// or generating HTML for each album
+// message d'erreur si l'album n'existe pas
 if (sizeof($albumsFound) == 0) {
     $albumsFoundAsHTML .= <<<HTML
         <p class="no-result">VOTRE RECHERCHE N'EXISTE PAS.</p>
@@ -146,13 +133,7 @@ if (sizeof($albumsFound) == 0) {
     }
 }
 
-/**
- * Query songs corresponding to the search
- *
- * This query retrieves the song name, duration, note, its album name,
- * its artist name,
- * if it is corresponding to the search.
- **/
+
 try {
     $songsFound = $db->executeQuery(<<<SQL
     SELECT 
@@ -177,8 +158,7 @@ SQL, ["search" => $search, "searchLike" => $searchLike]);
     exit;
 }
 
-// Return message if no song founded
-// or generating HTML for each song
+
 if (sizeof($songsFound) == 0) {
     $songsFoundAsHTML .= <<<HTML
         <p class="no-result">VOTRE RECHERCHE N'EXISTE PAS</p>

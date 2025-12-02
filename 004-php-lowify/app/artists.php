@@ -132,8 +132,7 @@ function changerStyleArtist(artistId, styleSuffix) {
     if (body) body.className = 'artist-body' + styleSuffix;
 }
 
-// Exemple : appliquer le style alternatif après 2 secondes
-// changerStyleArtist($artistId, '-alt');
+
 </script>
 
 HTML;
@@ -147,7 +146,6 @@ HTML;
 }
 
 // -- on crée la structure HTML de notre page
-// en injectant le HTML correspondant à la liste des artistes
 $html = <<<HTML
 <div class="container bg-dark text-white p-4">
     <a href="index.php" class="link text-white">⬅ ACCUEIL !</a>
@@ -171,7 +169,6 @@ color: deepskyblue;
 HTML;
 
 // -- on génère et on affiche la page
-// displaying the page using HTMLPage class
 echo (new HTMLPage(title: "Lowify - Artistes"))
     ->addContent($html)
     ->addHead('<meta charset="utf-8">')

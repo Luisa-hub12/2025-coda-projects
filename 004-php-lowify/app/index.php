@@ -41,12 +41,7 @@ try {
     exit;
 }
 
-/**
- * Query top 5 artist most listened information
- *
- * This query retrieves the artist name, its cover, id,
- * and order by monthly listeners.
- **/
+// base donnée du top 5 des artistes
 try {
     $top5Artists = $db->executeQuery(<<<SQL
     SELECT
@@ -79,12 +74,7 @@ foreach ($top5Artists as $artist) {
     HTML;
 }
 
-/**
- * Query top 5 album most recent
- *
- * This query retrieves the album name, its cover, its release date,
- * the name of his artist, and order by release date.
- **/
+// base de donnée du top 5 album récent?
 try {
     $top5RecentAlbums = $db->executeQuery(<<<SQL
     SELECT
@@ -104,7 +94,7 @@ SQL);
     exit;
 }
 
-// generating HTML for each album of the top 5
+// html pour tt les albums du top 5
 foreach ($top5RecentAlbums as $album) {
     $albumId = $album['album_id'];
     $albumName = $album['album_name'];
@@ -123,12 +113,7 @@ foreach ($top5RecentAlbums as $album) {
     HTML;
 }
 
-/**
- * Query top 5 album with best notes
- *
- * This query retrieves the album name, its cover, its release date,
- * the name of his artist, and order by notes descendent.
- **/
+// top 5 album qui ont les meilleurs notes
 try {
     $top5NotationAlbums = $db->executeQuery(<<<SQL
     SELECT
@@ -151,7 +136,7 @@ SQL);
     exit;
 }
 
-// generating HTML for each album of the top 5 notation
+// HTML pour le top 5 des notes album.
 foreach ($top5NotationAlbums as $album) {
     $albumId = $album['album_id'];
     $albumName = $album['album_name'];
@@ -223,11 +208,7 @@ foreach ($top5NotationAlbums as $album) {
     HTML;
 }
 
-/**
- * Querys every artist, album, song to auto-complete search
- *
- * This query retrieves albums name, artists name, and songs name
- **/
+// on se prépare a chaque recherche de l'utilisateur, si existe pas message 'erreur'.
 try {
     $allArtistsForSearch = $db->executeQuery(<<<SQL
     SELECT
@@ -259,7 +240,7 @@ SQL);
     exit;
 }
 
-// generating HTML for each album of the top 5 notation
+
 foreach ($allAlbumsForSearch as $album) {
     $albumName = $album['album_name'];
 
@@ -279,7 +260,6 @@ SQL);
     exit;
 }
 
-// generating HTML for each album of the top 5 notation
 foreach ($allSongsForSearch as $song) {
     $songName = $song['song_name'];
 
@@ -288,7 +268,6 @@ foreach ($allSongsForSearch as $song) {
     HTML;
 }
 
-// final HTML structure of the page
 $html = <<< HTML
 <div class="page-container">
     <h1 class="content-title">Lowify</h1>
